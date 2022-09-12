@@ -182,7 +182,6 @@ class StockRequest(models.Model):
 
     def action_create_picking(self):
         picking = {
-            'origin': self.name,
             'partner_id': self.requested_by.partner_id.id,
             'picking_type_id': self.picking_type_id.id or False,
             'location_id': self.location_id.id,
@@ -323,7 +322,7 @@ class StockRequestLine(models.Model):
                 if request.allocation_ids
                 else 0
             )
-        if request.product_uom_qty == request.qty_done:
+        if self.product_uom_qty == self.qty_done:
             self.action_done()
 
     def check_done(self):
