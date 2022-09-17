@@ -9,7 +9,6 @@
                     <t t-else=''>
                                     <img class="pos-receipt-logo" src='/web/binary/company_logo'/>
                                 </t>
-                    <br/>
 
                 </xpath>
             <xpath expr="//span[@id='title_english']" position="replace"/>
@@ -107,10 +106,5 @@
             </t>
         </xpath>
         </t>
-    <t t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">
-
-        <xpath expr="//div[hasclass('pos-receipt-left-padding')]" position="replace">
-        </xpath>
-    </t>
 
 </templates>
