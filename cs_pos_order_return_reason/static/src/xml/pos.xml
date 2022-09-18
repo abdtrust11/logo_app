@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-name="csReturnReasonButton" owl="1">
+        <div class="control-button cs_return_reason" t-on-click="trigger('cs_return_reason')">
+            <span> </span>
+            <span>Return Reason</span>
+        </div>
+    </t>
+    
+    <t t-name="TemplateOrderReturnPopupWidget" owl="1">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-text popup-lg product-configurator-popup return_reason_popup">
+                <header class="title">
+                    Add Reason For Return
+                </header>
+                <div class="main-body touch-scrollable scrollable-y note_body">
+                    <textarea id="textarea_note" rows="7" cols="30">
+                    	
+                    </textarea>
+                </div>
+                <footer class="footer">
+                    <div class="button confirm" t-on-click="confirm">
+                        Add
+                    </div>
+                    <div class="button cancel" t-on-click="cancel">
+                        Cancel
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+    
+    <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="after">
+            <t t-if="env.pos.config.display_reason_in_receipt">
+                <t t-if="props.order.get_order_return_reason()">
+                    <br />
+                    <div style="text-align: left;">
+                        <span style="font-weight: bold;">Reason:</span>
+                        <span>
+                            <p style="font-size: 13px;"><t t-esc="props.order.get_order_return_reason()" /></p>
+                        </span>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </t>
+    
+</templates>

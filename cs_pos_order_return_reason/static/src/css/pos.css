@@ -1,0 +1,9 @@
+.popup.popup-text.popup-lg.product-configurator-popup.return_reason_popup {
+    width: 40% !important;
+}
+#textarea_note {
+    height: 104px;
+}
+.main-body.touch-scrollable.scrollable-y.note_body {
+    padding: 10px;
+}

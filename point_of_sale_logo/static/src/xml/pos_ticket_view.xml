@@ -90,12 +90,67 @@
             </div>
 
                     </xpath>
-            <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="replace"/>
-            <xpath expr="//div[hasclass('orderlines')]" position="replace">
-                  <div class="orderlines" style="margin-top:-70px;">
-                <t t-call="OrderLinesReceipt"/>
+             <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="replace">
+            <div class="pos-receipt-order-data">
+
+            </div>
+        </xpath>
+            <xpath expr="//div[hasclass('pos-receipt-amount-arabic')]" position="replace">
+        </xpath>
+             <xpath expr="//div[hasclass('receipt-change')]" position="replace">
+        </xpath>
+
+        <xpath expr="//div[hasclass('orderlines')]" position="replace">
+            <div class="orderlines">
+                <table class='receipt-orderlines'>
+                    <colgroup>
+                        <col width='30%' />
+                        <col width='15%' />
+                        <col width='20%' />
+                        <col width='30%' />
+                    </colgroup>
+                    <tr style="border-bottom: 1px dashed black;border-top: 1px dashed black;">
+                        <th style='text-align:left'>Item <br/>
+ الصنف </th>
+                        <th style='text-align:center'>Qty <br/>
+ الكمية</th>
+                        <th style='text-align:center'>U.P <br/>
+ سعر الوحدة</th>
+                        <th style='text-align:center'>P.VAT السعر <br/>
+ مع الضريبة </th>
+                    </tr>
+                    <tr t-foreach="orderlines"
+                        style="border-bottom: dotted !important;"
+                        t-as="orderline" t-key="orderline.id">
+                        <td>
+                            <t t-esc="orderline.get_product().display_name"/>
+                            <t t-if="orderline.get_discount() > 0">
+                                <div class="pos-disc-font">
+                                    With a <t t-esc="orderline.get_discount()"/>
+% discount
+                                </div>
+                            </t>
+                        </td>
+                        <td style='text-align:center'>
+                            <t t-esc="orderline.get_quantity()"/>
+                            <!--                            <t t-esc="orderline.get_quantity_str_with_unit()"/>-->
+                        </td>
+                        <td style='text-align:center'>
+                            <t t-esc="env.pos.format_currency_no_symbol(orderline.get_unit_display_price())"></t>
+                        </td >
+                        <td style='text-align:right'>
+                            <t t-esc="env.pos.format_currency_no_symbol(orderline.get_price_with_tax())"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
             </xpath>
+<!--            <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="replace"/>-->
+<!--            <xpath expr="//div[hasclass('orderlines')]" position="replace">-->
+<!--                  <div class="orderlines" style="margin-top:-70px;">-->
+<!--                <t t-call="OrderLinesReceipt"/>-->
+<!--            </div>-->
+<!--            </xpath>-->
              <xpath expr="//img[@id ='qrcode']" position="replace">
 
         </xpath>
@@ -106,11 +161,73 @@
                 <br/>
             </t>
         </xpath>
-        </t>
-    <t t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">
+             <xpath expr="//t[@t-if='!isTaxIncluded']" position="replace">
+            <div class="pos-receipt-right-align">--------</div>
+            <br/>
+            <div>
+                <div class="pos-receipt-left-align" style="float:left;margin-bottom: 10px;">
+                    <div>Total Taxable (Excluding VAT)</div>
+                    <div> الاجمالي الخاضع للضريبة</div>
+                </div>
+                <span t-esc="env.pos.format_currency(receipt.subtotal)" class="pos-receipt-right-align" style="margin-top:5px"/>
+                <br/>
+            </div>
+            <t t-foreach="receipt.tax_details" t-as="tax" t-key="tax.name">
+                <div style="margin-top: 20px;margin-bottom: 20px;">
+                    <div class="pos-receipt-left-align" style="float:left">
+                        <div>Total VAT</div>
+                        <div> مجموع ضريبة القيمة المضافة</div>
+                    </div>
+                    <div class="pos-receipt-right-align" style="margin-top:5px">
+                        <span t-esc='env.pos.format_currency(tax.amount)' />
+                    </div>
 
-        <xpath expr="//div[hasclass('pos-receipt-left-padding')]" position="replace">
+                    <br/>
+                </div>
+            </t>
         </xpath>
-    </t>
+        <xpath expr="//div[hasclass('pos-receipt-amount')]" position="replace">
+            <div class="pos-receipt-amount" style="padding:0px;">
+                <div class="pos-receipt-left-align" style="float:left;margin-bottom: 10px;">
+                    <div>Total Amount</div>
+                    <div>إجمالي المبلغ المستحق</div>
+                </div>
+                <span t-esc="env.pos.format_currency(receipt.total_with_tax)" class="pos-receipt-right-align" style="margin-top:10px"/>
+                <br/>
+            </div>
+        </xpath>
+             <xpath expr="//t[@t-foreach='receipt.paymentlines']" position="replace">
+                    <div style="margin-bottom:20px">
+                <t t-foreach="receipt.paymentlines" t-as="line" t-key="line.cid">
+                    <div>
+                        <div class="pos-receipt-left-align" style="float:left;margin-bottom: 5px;">
+                            <div>
+                                <t t-esc="line.name" />
+                            </div>
+                            <div>المدفوع</div>
+                        </div>
+                        <span t-esc="env.pos.format_currency_no_symbol(line.amount)" class="pos-receipt-right-align" style="margin-top:10px" />
+
+                        <br/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('pos-receipt-amount') and hasclass('receipt-change')]" position="replace">
+            <div class="pos-receipt-amount receipt-change" style="padding:0px;">
+                <div class="pos-receipt-left-align" style="float:left;margin-bottom: 10px;">
+                    <div>CHANGE</div>
+                    <div>المتبقي</div>
+                </div>
+                <span t-esc="env.pos.format_currency(receipt.change)" class="pos-receipt-right-align" style="margin-top:10px"/>
+            </div>
+        </xpath>
+        </t>
+<!--    <t t-inherit="point_of_sale.OrderLinesReceipt" t-inherit-mode="extension" owl="1">-->
+
+<!--        <xpath expr="//div[hasclass('pos-receipt-left-padding')]" position="replace">-->
+<!--        </xpath>-->
+<!--    </t>-->
 
 </templates>
