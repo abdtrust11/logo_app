@@ -30,7 +30,7 @@
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': "http://www.cybrosys.com",
-    'depends': ['base', 'point_of_sale'],
+    'depends': ['base', 'point_of_sale', 'pos_branch'],
     'data': [
         'views/pos_config_image_view.xml',
     ],
