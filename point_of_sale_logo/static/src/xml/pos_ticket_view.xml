@@ -202,7 +202,7 @@
                      <tr>
                          <td >Total After Discount</td>
                          <td style="text-align: center;font-size:13px;font-weight: bold;"><span t-esc="env.pos.format_currency(receipt.subtotal)"/> </td>
-                         <td style="text-align: right;">الإجمالي بعد الخصم</td>
+                         <td style="text-align: right;">الصافي</td>
                      </tr>
 <!--                <br/>-->
 
@@ -212,9 +212,9 @@
                          <td style="text-align: right;">الضريبة <br/>المضافة</td>
                      </tr>
                        <tr>
-                         <td>Net Amount</td>
+                         <td>Total</td>
                          <td style="text-align: center;"><span style="font-size:13px;font-weight: bold;" t-esc="env.pos.format_currency(receipt.subtotal+total_tax)"/> </td>
-                         <td style="text-align: right;" >الصافي</td>
+                         <td style="text-align: right;" >الإجمالي</td>
                      </tr>
                  </table>
         </xpath>
@@ -235,14 +235,15 @@
                                 <t t-esc="line.name" />
                             </div>
                                     <div class="pos-receipt-left-align" style="float:left; width: 100%; !important;">
-
+<div class="pos-receipt-amount" style="padding:0px;">
                             <table style="width: 100%;">
                  <tr>
                          <td >Paid</td>
-                         <td style="text-align: center;"><span t-esc="env.pos.format_currency_no_symbol(line.amount)"/> </td>
+                         <td style="text-align: right;"><span  style="text-align: right;" t-esc="env.pos.format_currency(line.amount)"/> </td>
                          <td style="text-align: right;" >المدفوع</td>
                      </tr>
                  </table>
+    </div>
                                     </div>
 
                 </t>
