@@ -185,29 +185,30 @@
                 <t t-set="total_tax" t-value="total_tax+tax.amount"/>
             </t>
            <!--  <t t-set="total_with_discount" t-value="receipt.subtotal+receipt.total_discount-total_tax"/> -->
-		<t t-set="total_with_discount" t-value="receipt.subtotal - total_tax + receipt.total_discount"/>
+		<t t-set="total_with_discount" t-value="receipt.subtotal-total_tax -receipt.total_discount"/>
              <t t-set="total_without_discount" t-value="receipt.subtotal-total_tax"/>
             <br/>
                  <table style="border-collapse: separate;border-spacing: 0.5em;">
                      <tr>
-                         <td>Total Before Tax</td>
+                         <td>Total Before Discount</td>
                          <td style="text-align: center"><span style="font-size:13px;font-weight: bold;" t-esc="env.pos.format_currency(total_with_discount)"/> </td>
-                         <td style="text-align: right;"> الإجمالي قبل الضريبة </td>
+                         <td style="text-align: right;"لخصم</td>
                      </tr>
-<!--                 env.pos.format_currency(receipt.total_discount)>
+             <br/>
+<!--                 env.pos.format_currency(receipt.total_discount)-->
 			<tr>
                          <td>Total</td>
                          <td style="text-align: center;"><span style="font-size:13px;font-weight: bold;" t-esc="env.pos.format_currency(receipt.subtotal)"/> </td>
                          <td style="text-align: right;" >الإجمالي</td>
-                     </tr> -->
-                     <tr t-if="receipt.total_discount">
+                     </tr>
+                     <tr>
                          <td >Total Discount</td>
-                         <td style="text-align: center;font-size:13px;font-weight: bold;">- <span t-esc="env.pos.format_currency(receipt.total_discount)"/> </td>
+                         <td style="text-align: center;font-size:13px;font-weight: bold;"><span t-esc="env.pos.format_currency(receipt.total_discount)"/> </td>
                          <td style="text-align: right;">الإجمالي الخصم</td>
                      </tr>
 <!--                <br/>-->
                      <tr>
-                         <td >Net</td>
+                         <td >Total After Discount</td>
                          <td style="text-align: center;font-size:13px;font-weight: bold;"><span t-esc="env.pos.format_currency(total_without_discount)"/> </td>
                          <td style="text-align: right;">الصافي</td>
                      </tr>
@@ -218,14 +219,23 @@
                          <td  style="text-align: center"><span style="font-size:13px;font-weight: bold;" t-esc="env.pos.format_currency(total_tax)"/> </td>
                          <td style="text-align: right;">الضريبة <br/>المضافة</td>
                      </tr>
-                       <tr>
+                     <tr>
                          <td>Total</td>
                          <td style="text-align: center;"><span style="font-size:13px;font-weight: bold;" t-esc="env.pos.format_currency(receipt.subtotal)"/> </td>
                          <td style="text-align: right;" >الإجمالي</td>
                      </tr>
                  </table>
         </xpath>
-      <xpath expr="//t[@t-if='isTaxIncluded']" position="replace"/>
+<!--        <xpath expr="//div[hasclass('pos-receipt-amount')]" position="replace">-->
+<!--                  <table>-->
+<!--                 <tr>-->
+<!--                         <td>Net Amount</td>-->
+<!--                         <td><span t-esc="env.pos.format_currency(total+total_tax)"/> </td>-->
+<!--                         <td>الصافي</td>-->
+<!--                     </tr>-->
+<!--                 </table>-->
+<!--                <br/>-->
+<!--        </xpath>-->
              <xpath expr="//t[@t-foreach='receipt.paymentlines']" position="replace">
                     <div style="border-top: dotted !important;width: 100%;margin-top: -50px;">
                 <t t-foreach="receipt.paymentlines" t-as="line" t-key="line.cid">
